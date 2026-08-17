@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- background: sky gradient + sun glow + layered mountains -->
+    <div class="bg" aria-hidden="true">
+        <div class="sky"></div>
+        <div class="sun-orb"></div>
+        <svg class="mountains" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path d="M0 320 V235 L120 130 L255 240 L385 120 L525 265 L665 150 L805 285 L945 130 L1105 255 L1245 145 L1385 245 L1440 210 V320 Z" fill="#2b1044"/>
+            <path d="M0 320 V250 L150 165 L310 275 L465 175 L640 295 L815 185 L975 285 L1155 195 L1305 275 L1440 225 V320 Z" fill="#381354"/>
+            <path d="M0 320 V280 L185 215 L360 300 L545 225 L730 310 L915 235 L1100 305 L1265 245 L1440 295 V320 Z" fill="#451663"/>
+            <path d="M0 320 V300 L225 255 L430 320 L650 265 L870 320 L1090 275 L1310 320 L1440 290 V320 Z" fill="#0e0419"/>
+        </svg>
+    </div>
+
+    <div class="app">
+
+        <header class="header">
+            <div class="header-left">
+                <span class="date" id="date">—</span>
+                <h1 class="city">
+                    <svg class="pin" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z"/>
+                        <circle cx="12" cy="10" r="2.6"/>
+                    </svg>
+                    <span id="city-name">—</span>
+                </h1>
+            </div>
+            <div class="search">
+                <input type="text" id="city-input" placeholder="Search city" autocomplete="off" spellcheck="false">
+                <button id="search-btn" aria-label="Search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M16.5 16.5 21 21"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div class="hero-temp">
+                <span class="big-temp" id="big-temp">—°</span>
+                <div class="hero-icon" id="hero-icon" aria-hidden="true">
+                    <svg viewBox="0 0 80 80">
+                        <g class="rays" stroke="#ffd93d" stroke-width="3" stroke-linecap="round">
+                            <line x1="40" y1="6" x2="40" y2="15"/>
+                            <line x1="40" y1="65" x2="40" y2="74"/>
+                            <line x1="6" y1="40" x2="15" y2="40"/>
+                            <line x1="65" y1="40" x2="74" y2="40"/>
+                            <line x1="16" y1="16" x2="22.5" y2="22.5"/>
+                            <line x1="57.5" y1="57.5" x2="64" y2="64"/>
+                            <line x1="64" y1="16" x2="57.5" y2="22.5"/>
+                            <line x1="22.5" y1="57.5" x2="16" y2="64"/>
+                        </g>
+                        <circle cx="40" cy="40" r="17" fill="#ffd93d"/>
+                    </svg>
+                </div>
+            </div>
+            <p class="condition" id="condition">—</p>
+            <p class="feels">Feels like <b id="feels-temp">—°</b></p>
+            <p class="hilo">
+                <span class="hi">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+                    <b id="hi-temp">—</b>° High
+                </span>
+                <span class="lo">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+                    <b id="lo-temp">—</b>° Low
+                </span>
+            </p>
+        </section>
+
+        <section class="cards">
+            <div class="col-stack">
+                <div class="card hourly">
+                    <h3>Hourly Forecast</h3>
+                    <div class="row scroll-row" id="hourly-row"></div>
+                </div>
+
+                <div class="card daily">
+                    <h3>7-Day Forecast</h3>
+                    <div class="daily-scroll">
+                        <button class="nav prev" id="daily-prev" aria-label="Scroll left">
+                            <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+                        </button>
+                        <div class="row scroll-row" id="daily-row"></div>
+                        <button class="nav next" id="daily-next" aria-label="Scroll right">
+                            <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card details">
+                <h3>Weather Details</h3>
+                <div class="d-grid">
+                    <div class="d-cell">
+                        <svg viewBox="0 0 24 24"><path d="M12 3c3 3.2 6 6.4 6 10a6 6 0 0 1-12 0c0-3.6 3-6.8 6-10Z"/><path d="M9.5 13h5"/></svg>
+                        <span class="d-label">Humidity</span>
+                        <span class="d-value"><b id="humidity">—</b>%</span>
+                    </div>
+                    <div class="d-cell">
+                        <svg viewBox="0 0 24 24"><path d="M4 9h9M17 9h3M4 13h6M13 13h7M4 17h11M18 17h2"/></svg>
+                        <span class="d-label">Wind</span>
+                        <span class="d-value"><b id="wind-speed">—</b> km/h <i id="wind-dir">NE</i></span>
+                    </div>
+                    <div class="d-cell">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+                        <span class="d-label">Pressure</span>
+                        <span class="d-value"><b id="pressure">—</b> hPa</span>
+                    </div>
+                    <div class="d-cell">
+                        <svg viewBox="0 0 24 24"><path d="M12 3c-4 4.5-7 7-7 10.5A7 7 0 0 0 19 13.5C19 10 16 7.5 12 3Z"/></svg>
+                        <span class="d-label">Visibility</span>
+                        <span class="d-value"><b id="visibility">—</b> km</span>
+                    </div>
+                    <div class="d-cell">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5 5l2.2 2.2M16.8 16.8 19 19M19 5l-2.2 2.2M7.2 16.8 5 19"/></svg>
+                        <span class="d-label">UV Index</span>
+                        <span class="d-value"><b id="uv-value">—</b> <i class="warn-orange" id="uv-label">—</i></span>
+                    </div>
+                    <div class="d-cell">
+                        <svg viewBox="0 0 24 24"><path d="M12 21c-4.5 0-8-3-8-6.5S7.5 7.5 12 6c4.5 1.5 8 5 8 8.5S16.5 21 12 21Z"/><path d="M7 14.5c1.5-2.5 3-3.5 5-3.5"/></svg>
+                        <span class="d-label">Air Quality</span>
+                        <span class="d-value"><b id="aq-value">—</b> <i class="warn-yellow" id="aq-label">—</i></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+</body>
+
+</html>
